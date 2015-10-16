@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ExpandableListView;
 
+import com.flyco.animation.BounceEnter.BounceTopEnter;
+import com.flyco.animation.SlideExit.SlideBottomExit;
 import com.flyco.dialogsamples.R;
 import com.flyco.dialogsamples.adapter.HomeAdapter;
 import com.flyco.dialogsamples.adapter.TestAdapter;
@@ -24,15 +26,11 @@ import com.flyco.animation.FadeExit.FadeExit;
 import com.flyco.animation.FlipEnter.FlipVerticalSwingEnter;
 import com.flyco.dialog.entity.DialogMenuItem;
 import com.flyco.dialog.listener.OnBtnClickL;
-import com.flyco.dialog.listener.OnBtnLeftClickL;
-import com.flyco.dialog.listener.OnBtnRightClickL;
 import com.flyco.dialog.listener.OnOperItemClickL;
 import com.flyco.dialog.widget.ActionSheetDialog;
 import com.flyco.dialog.widget.MaterialDialog;
-import com.flyco.dialog.widget.MaterialTipDialog;
 import com.flyco.dialog.widget.NormalDialog;
 import com.flyco.dialog.widget.NormalListDialog;
-import com.flyco.dialog.widget.NormalTipDialog;
 
 import java.util.ArrayList;
 
@@ -42,12 +40,21 @@ public class DialogHomeActivity extends AppCompatActivity implements ExpandableL
     public static String[][] childs = {
             /**Default Inner Dialog*/
             {
-                    "NormalDialog StyleOne", "NormalDialog StyleTwo", "NormalDialog Custom Attr",
-                    "NormalTipDialog StyleOne", "NormalTipDialog StyleTwo",
-                    "MaterialDialog", "MaterialDialog NoTitle", "MaterialTipDialog",
-                    "NormalListDialog", "NormalListDialog Custom Attr", "NormalListDialog No Title",
-                    "NormalListDialog DataSource String[]", "NormalListDialog DataSource Adapter",
-                    "ActionSheetDialog", "ActionSheetDialog NoTitle"
+                    "NormalDialog Default(two btns)",                    //0
+                    "NormalDialog StyleTwo",                    //1
+                    "NormalDialog Custom Attr",                 //2
+                    "NormalDialog(one btn)",                 //3
+                    "NormalDialog(three btns)",                 //4
+                    "MaterialDialogDefault Default(two btns)",  //5
+                    "MaterialDialogDefault(one btn)",           //6
+                    "MaterialDialogDefault(three btns)",        //7
+                    "NormalListDialog",                         //8
+                    "NormalListDialog Custom Attr",             //10
+                    "NormalListDialog No Title",                //11
+                    "NormalListDialog DataSource String[]",     //12
+                    "NormalListDialog DataSource Adapter",      //13
+                    "ActionSheetDialog",                        //14
+                    "ActionSheetDialog NoTitle"                 //15
             },
             /**Custom Dialog*/
             {
@@ -91,8 +98,8 @@ public class DialogHomeActivity extends AppCompatActivity implements ExpandableL
         testItems.add(new DialogMenuItem("歌手", R.mipmap.ic_winstyle_artist));
         testItems.add(new DialogMenuItem("专辑", R.mipmap.ic_winstyle_album));
 
-        bas_in = new FlipVerticalSwingEnter();
-        bas_out = new FadeExit();
+        bas_in = new BounceTopEnter();
+        bas_out = new SlideBottomExit();
 
 
         View decorView = getWindow().getDecorView();
@@ -124,15 +131,15 @@ public class DialogHomeActivity extends AppCompatActivity implements ExpandableL
             } else if (childPosition == 2) {
                 NormalDialogCustomAttr();
             } else if (childPosition == 3) {
-                NormalTipDialogStyleOne();
+                NormalDialogOneBtn();
             } else if (childPosition == 4) {
-                NormalTipDialogStyleTwo();
+                NormalDialoThreeBtn();
             } else if (childPosition == 5) {
-                MaterialDialog();
+                MaterialDialogDefault();
             } else if (childPosition == 6) {
-                MaterialDialogNoTitle();
+                MaterialDialogOneBtn();
             } else if (childPosition == 7) {
-                MaterialTipDialog();
+                MaterialDialogThreeBtns();
             } else if (childPosition == 8) {
                 NormalListDialog();
             } else if (childPosition == 9) {
@@ -192,21 +199,21 @@ public class DialogHomeActivity extends AppCompatActivity implements ExpandableL
                 .dismissAnim(bas_out)//
                 .show();
 
-        dialog.setOnBtnLeftClickL(new OnBtnLeftClickL() {
-            @Override
-            public void onBtnLeftClick() {
-                T.showShort(context, "onBtnLeftClick");
-                dialog.dismiss();
-            }
-        });
-
-        dialog.setOnBtnRightClickL(new OnBtnRightClickL() {
-            @Override
-            public void onBtnRightClick() {
-                T.showShort(context, "onBtnRightClick");
-                dialog.dismiss();
-            }
-        });
+        dialog.setOnBtnClickL(
+                new OnBtnClickL() {
+                    @Override
+                    public void onBtnClick() {
+                        T.showShort(context, "left");
+                        dialog.dismiss();
+                    }
+                },
+                new OnBtnClickL() {
+                    @Override
+                    public void onBtnClick() {
+                        T.showShort(context, "right");
+                        dialog.dismiss();
+                    }
+                });
     }
 
     private void NormalDialogStyleTwo() {
@@ -218,21 +225,22 @@ public class DialogHomeActivity extends AppCompatActivity implements ExpandableL
                 .dismissAnim(bas_out)//
                 .show();
 
-        dialog.setOnBtnLeftClickL(new OnBtnLeftClickL() {
-            @Override
-            public void onBtnLeftClick() {
-                T.showShort(context, "onBtnLeftClick定");
-                dialog.dismiss();
-            }
-        });
+        dialog.setOnBtnClickL(
+                new OnBtnClickL() {
+                    @Override
+                    public void onBtnClick() {
+                        T.showShort(context, "left");
+                        dialog.dismiss();
+                    }
+                },
+                new OnBtnClickL() {
+                    @Override
+                    public void onBtnClick() {
+                        T.showShort(context, "right");
+                        dialog.dismiss();
+                    }
+                });
 
-        dialog.setOnBtnRightClickL(new OnBtnRightClickL() {
-            @Override
-            public void onBtnRightClick() {
-                T.showShort(context, "onBtnRightClick");
-                dialog.dismiss();
-            }
-        });
     }
 
     private void NormalDialogCustomAttr() {
@@ -246,32 +254,33 @@ public class DialogHomeActivity extends AppCompatActivity implements ExpandableL
                 .dividerColor(Color.parseColor("#222222"))//
                 .btnTextSize(15.5f, 15.5f)//
                 .btnTextColor(Color.parseColor("#ffffff"), Color.parseColor("#ffffff"))//
-                .btnColorPress(Color.parseColor("#2B2B2B"))//
+                .btnPressColor(Color.parseColor("#2B2B2B"))//
                 .widthScale(0.85f)//
                 .showAnim(bas_in)//
                 .dismissAnim(bas_out)//
                 .show();
 
-        dialog.setOnBtnLeftClickL(new OnBtnLeftClickL() {
-            @Override
-            public void onBtnLeftClick() {
-                T.showShort(context, "onBtnLeftClick");
-                dialog.dismiss();
-            }
-        });
-
-        dialog.setOnBtnRightClickL(new OnBtnRightClickL() {
-            @Override
-            public void onBtnRightClick() {
-                T.showShort(context, "onBtnRightClick");
-                dialog.dismiss();
-            }
-        });
+        dialog.setOnBtnClickL(
+                new OnBtnClickL() {
+                    @Override
+                    public void onBtnClick() {
+                        T.showShort(context, "left");
+                        dialog.dismiss();
+                    }
+                },
+                new OnBtnClickL() {
+                    @Override
+                    public void onBtnClick() {
+                        T.showShort(context, "right");
+                        dialog.dismiss();
+                    }
+                });
     }
 
-    private void NormalTipDialogStyleOne() {
-        final NormalTipDialog dialog = new NormalTipDialog(context);
+    private void NormalDialogOneBtn() {
+        final NormalDialog dialog = new NormalDialog(context);
         dialog.content("你今天的抢购名额已用完~")//
+                .btnNum(1)
                 .btnText("继续逛逛")//
                 .showAnim(bas_in)//
                 .dismissAnim(bas_out)//
@@ -280,86 +289,115 @@ public class DialogHomeActivity extends AppCompatActivity implements ExpandableL
         dialog.setOnBtnClickL(new OnBtnClickL() {
             @Override
             public void onBtnClick() {
+                T.showShort(context, "middle");
                 dialog.dismiss();
             }
         });
     }
 
-    private void NormalTipDialogStyleTwo() {
-        final NormalTipDialog dialog = new NormalTipDialog(context);
+    private void NormalDialoThreeBtn() {
+        final NormalDialog dialog = new NormalDialog(context);
         dialog.content("你今天的抢购名额已用完~")//
-                .style(NormalTipDialog.STYLE_TWO)//
-                .btnText("继续逛逛")//
+                .style(NormalDialog.STYLE_TWO)//
+                .btnNum(3)
+                .btnText("取消", "确定", "继续逛逛")//
                 .showAnim(bas_in)//
                 .dismissAnim(bas_out)//
                 .show();
 
-        dialog.setOnBtnClickL(new OnBtnClickL() {
-            @Override
-            public void onBtnClick() {
-                dialog.dismiss();
-            }
-        });
+        dialog.setOnBtnClickL(
+                new OnBtnClickL() {
+                    @Override
+                    public void onBtnClick() {
+                        T.showShort(context, "left");
+                        dialog.dismiss();
+                    }
+                },
+                new OnBtnClickL() {
+                    @Override
+                    public void onBtnClick() {
+                        T.showShort(context, "right");
+                        dialog.dismiss();
+                    }
+                },
+                new OnBtnClickL() {
+                    @Override
+                    public void onBtnClick() {
+                        T.showShort(context, "middle");
+                        dialog.dismiss();
+                    }
+                });
     }
 
-    private void MaterialDialog() {
+    private void MaterialDialogDefault() {
         final MaterialDialog dialog = new MaterialDialog(context);
         dialog.content(
-                "嗨！这是一个 MaterialDialog. 它非常方便使用，你只需将它实例化，这个美观的对话框便会自动地显示出来。"
+                "嗨！这是一个 MaterialDialogDefault. 它非常方便使用，你只需将它实例化，这个美观的对话框便会自动地显示出来。"
                         + "它简洁小巧，完全遵照 Google 2014 年发布的 Material Design 风格，希望你能喜欢它！^ ^")//
                 .btnText("取消", "确定")//
                 .showAnim(bas_in)//
                 .dismissAnim(bas_out)//
                 .show();
 
-        dialog.setOnBtnLeftClickL(new OnBtnLeftClickL() {
-            @Override
-            public void onBtnLeftClick() {
-                T.showShort(context, "onBtnLeftClick");
-                dialog.dismiss();
-            }
-        });
-
-        dialog.setOnBtnRightClickL(new OnBtnRightClickL() {
-            @Override
-            public void onBtnRightClick() {
-                T.showShort(context, "onBtnRightClick");
-                dialog.dismiss();
-            }
-        });
+        dialog.setOnBtnClickL(
+                new OnBtnClickL() {//left btn click listener
+                    @Override
+                    public void onBtnClick() {
+                        T.showShort(context, "left");
+                        dialog.dismiss();
+                    }
+                },
+                new OnBtnClickL() {//right btn click listener
+                    @Override
+                    public void onBtnClick() {
+                        T.showShort(context, "right");
+                        dialog.dismiss();
+                    }
+                }
+        );
     }
 
 
-    private void MaterialDialogNoTitle() {
+    private void MaterialDialogThreeBtns() {
         final MaterialDialog dialog = new MaterialDialog(context);
         dialog.isTitleShow(false)//
+                .btnNum(3)
                 .content("为保证咖啡豆的新鲜度和咖啡的香味，并配以特有的传统烘焙和手工冲。")//
-                .btnText("确定", "取消")//
+                .btnText("确定", "取消", "知道了")//
                 .showAnim(bas_in)//
                 .dismissAnim(bas_out)//
                 .show();
 
-        dialog.setOnBtnLeftClickL(new OnBtnLeftClickL() {
-            @Override
-            public void onBtnLeftClick() {
-                T.showShort(context, "onBtnLeftClick");
-                dialog.dismiss();
-            }
-        });
-
-        dialog.setOnBtnRightClickL(new OnBtnRightClickL() {
-            @Override
-            public void onBtnRightClick() {
-                T.showShort(context, "onBtnRightClick");
-                dialog.dismiss();
-            }
-        });
+        dialog.setOnBtnClickL(
+                new OnBtnClickL() {//left btn click listener
+                    @Override
+                    public void onBtnClick() {
+                        T.showShort(context, "left");
+                        dialog.dismiss();
+                    }
+                },
+                new OnBtnClickL() {//right btn click listener
+                    @Override
+                    public void onBtnClick() {
+                        T.showShort(context, "right");
+                        dialog.dismiss();
+                    }
+                }
+                ,
+                new OnBtnClickL() {//middle btn click listener
+                    @Override
+                    public void onBtnClick() {
+                        T.showShort(context, "middle");
+                        dialog.dismiss();
+                    }
+                }
+        );
     }
 
-    private void MaterialTipDialog() {
-        final MaterialTipDialog dialog = new MaterialTipDialog(context);
+    private void MaterialDialogOneBtn() {
+        final MaterialDialog dialog = new MaterialDialog(context);
         dialog//
-                // .isTitleShow(false)//
+                .btnNum(1)
                 .content("为保证咖啡豆的新鲜度和咖啡的香味，并配以特有的传统烘焙和手工冲。")//
                 .btnText("确定")//
                 .showAnim(bas_in)//
@@ -369,6 +407,7 @@ public class DialogHomeActivity extends AppCompatActivity implements ExpandableL
         dialog.setOnBtnClickL(new OnBtnClickL() {
             @Override
             public void onBtnClick() {
+                T.showShort(context, "middle");
                 dialog.dismiss();
             }
         });
@@ -435,6 +474,7 @@ public class DialogHomeActivity extends AppCompatActivity implements ExpandableL
     private void NormalListDialogStringArr() {
         final NormalListDialog dialog = new NormalListDialog(context, stringItems);
         dialog.title("请选择")//
+                .layoutAnimation(null)
                 .show(R.style.myDialogAnim);
         dialog.setOnOperItemClickL(new OnOperItemClickL() {
             @Override
@@ -502,19 +542,19 @@ public class DialogHomeActivity extends AppCompatActivity implements ExpandableL
                 .dismissAnim(bas_out)//
                 .show();
 
-        dialog.setOnBtnLeftClickL(new OnBtnLeftClickL() {
-            @Override
-            public void onBtnLeftClick() {
-                dialog.dismiss();
-            }
-        });
-
-        dialog.setOnBtnRightClickL(new OnBtnRightClickL() {
-            @Override
-            public void onBtnRightClick() {
-                dialog.superDismiss();
-                finish();
-            }
-        });
+        dialog.setOnBtnClickL(
+                new OnBtnClickL() {
+                    @Override
+                    public void onBtnClick() {
+                        dialog.dismiss();
+                    }
+                },
+                new OnBtnClickL() {
+                    @Override
+                    public void onBtnClick() {
+                        dialog.superDismiss();
+                        finish();
+                    }
+                });
     }
 }

@@ -11,7 +11,7 @@ import com.nineoldandroids.animation.ObjectAnimator;
 import com.flyco.animation.BaseAnimatorSet;
 import com.flyco.dialog.widget.base.BottomBaseDialog;
 
-public class IOSTaoBaoDialog extends BottomBaseDialog {
+public class IOSTaoBaoDialog extends BottomBaseDialog<IOSTaoBaoDialog> {
     private LinearLayout ll_wechat_friend_circle;
     private LinearLayout ll_wechat_friend;
     private LinearLayout ll_qq;
@@ -37,7 +37,7 @@ public class IOSTaoBaoDialog extends BottomBaseDialog {
     }
 
     @Override
-    public boolean setUiBeforShow() {
+    public void setUiBeforShow() {
         ll_wechat_friend_circle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,8 +66,6 @@ public class IOSTaoBaoDialog extends BottomBaseDialog {
                 dismiss();
             }
         });
-
-        return false;
     }
 
     private BaseAnimatorSet windowInAs;

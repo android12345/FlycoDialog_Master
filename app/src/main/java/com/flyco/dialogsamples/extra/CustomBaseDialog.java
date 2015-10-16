@@ -11,7 +11,7 @@ import com.flyco.animation.Attention.Swing;
 import com.flyco.dialog.utils.CornerUtils;
 import com.flyco.dialog.widget.base.BaseDialog;
 
-public class CustomBaseDialog extends BaseDialog {
+public class CustomBaseDialog extends BaseDialog<CustomBaseDialog> {
     private TextView tv_cancel;
     private TextView tv_exit;
 
@@ -35,21 +35,18 @@ public class CustomBaseDialog extends BaseDialog {
     }
 
     @Override
-    public boolean setUiBeforShow() {
+    public void setUiBeforShow() {
         tv_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dismiss();
             }
         });
-
         tv_exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dismiss();
             }
         });
-
-        return false;
     }
 }
